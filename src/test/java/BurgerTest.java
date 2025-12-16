@@ -102,11 +102,20 @@ public class BurgerTest {
 
         String receipt = burger.getReceipt();
 
-        assertTrue("Чек должен содержать название булочки в начале",
-                receipt.contains("(==== black bun ====)"));
+        assertTrue("Чек должен начинаться с булочки",
+                receipt.startsWith("(==== black bun ====)\n"));
         assertTrue("Чек должен содержать ингредиент",
-                receipt.contains("sauce hot sauce"));
+                receipt.contains("\n= sauce hot sauce =\n"));
+        assertTrue("Чек должен заканчиваться булочкой и ценой",
+                receipt.contains("\n(==== black bun ====)\n"));
         assertTrue("Чек должен содержать цену",
-                receipt.contains("Price:"));
+                receipt.contains("\nPrice: "));
+
+        int firstBunIndex = receipt.indexOf("(==== black bun ====)");
+        int ingredientIndex = receipt.indexOf("= sauce hot sauce =");
+        int secondBunIndex = receipt.lastIndexOf("(==== black bun ====)");
+
+        assertTrue("Ингредиент должен быть между булочками",
+                firstBunIndex < ingredientIndex && ingredientIndex < secondBunIndex);
     }
 }
